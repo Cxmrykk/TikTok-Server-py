@@ -26,6 +26,13 @@ The Comment class in the TikTokApi.api.comment module represents a TikTok commen
 - parent: This is a TikTokApi object.
 - text: This is a string that represents the contents of the comment.
 
+Example:
+```python
+for comment in video.comments:
+    print(comment.text)
+    print(comment.as_dict)
+```
+
 ### User
 The User class in the TikTokApi.api.user module represents a TikTok user. Here's a summary of its attributes and methods:
 - as_dict: This is a dictionary that contains the raw data associated with the user.
@@ -37,16 +44,40 @@ The User class in the TikTokApi.api.user module represents a TikTok user. Here's
 - username: This is a string that represents the username of the user.
 - videos: This asynchronous method returns a user’s videos. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
 
+Example:
+```python
+user = api.user(username='therock')
+user_data = await api.user(username='therock').info()
+async for like in api.user(username="davidteathercodes").liked():
+    # do something
+async for video in api.user(username="davidteathercodes").videos():
+    # do something
+```
+
 ### Trending
 The Trending class in the TikTokApi.api.trending module contains static methods related to trending objects on TikTok. Here's a summary of its attributes and methods:
 - parent: This is a TikTokApi object.
 - videos: This static method returns videos that are trending on TikTok. It takes one parameter: count which is the amount of videos you want returned. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
+
+Example:
+```python
+async for video in api.trending.videos():
+    # do something
+```
 
 ### Search
 The Search class in the TikTokApi.api.search module contains static methods about searching TikTok for a phrase. Here's a summary of its attributes and methods:
 - parent: This is a TikTokApi object.
 - search_type: This static method searches for a specific type of object. It takes four parameters: search_term which is the phrase you want to search for, obj_type which is the type of object you want to search for (user), count which is the amount of users you want returned, and cursor which is the offset of users from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
 - users: This static method searches for users. It takes three parameters: search_term which is the phrase you want to search for, count which is the amount of users you want returned, and cursor which is the offset of users from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
+
+Example:
+```python
+async for user in api.search.search_type('david teather', 'user'):
+    # do something
+async for user in api.search.users('david teather'):
+    # do something
+```
 
 ### Hashtag
 The Hashtag class in the TikTokApi.api.hashtag module represents a TikTok Hashtag/Challenge. Here's a summary of its attributes and methods:
@@ -56,6 +87,14 @@ The Hashtag class in the TikTokApi.api.hashtag module represents a TikTok Hashta
 - name: This is a string that represents the name of the hashtag (omitting the #).
 - parent: This is a TikTokApi object.
 - videos: This asynchronous method returns TikTok videos that have this hashtag in the caption. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
+
+Example:
+```python
+hashtag = api.hashtag(name='funny')
+hashtag_data = await hashtag.info()
+async for video in api.hashtag(name='funny').videos():
+    # do something
+```
 
 ### Sound
 The Sound class in the TikTokApi.api.sound module represents a TikTok Sound/Music/Song. Here's a summary of its attributes and methods:
@@ -67,6 +106,14 @@ The Sound class in the TikTokApi.api.sound module represents a TikTok Sound/Musi
 - parent: This is a TikTokApi object.
 - title: This is a string that represents the title of the song.
 - videos: This asynchronous method returns Video objects of videos created with this sound. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
+
+Example:
+```python
+song = api.song(id='7016547803243022337')
+sound_info = await api.sound(id='7016547803243022337').info()
+async for video in api.sound(id='7016547803243022337').videos():
+    # do something
+```
 
 ### Video
 The Video class in the TikTokApi.api.video module represents a TikTok Video. Here's a summary of its attributes and methods:
@@ -83,3 +130,14 @@ The Video class in the TikTokApi.api.video module represents a TikTok Video. Her
 - sound: This is a Sound object that is associated with the video.
 - stats: This is a dictionary that represents TikTok’s stats of the video.
 - url: This is a string that represents the URL of the video.
+
+Example:
+```python
+video = api.video(id='7041997751718137094')
+video_bytes = await api.video(id='7041997751718137094').bytes()
+async for comment in api.video(id='7041997751718137094').comments():
+    # do something
+video_info = await api.video(id='7041997751718137094').info()
+async for related_videos in api.video(id='7041997751718137094').related_videos():
+    # do something
+```
