@@ -1,143 +1,33 @@
-#### TikTok API Example
-```python
-from TikTokApi import TikTokApi
-import asyncio
-import os
+### Installation
+```sh
+# clone the repository to disk
+git clone https://github.com/Cxmrykk/TikTok-http.git
+cd TikTok-http
 
-ms_token = os.environ.get("ms_token", None) # get your own ms_token from your cookies on tiktok.com
+# create/enter the virtual environment
+python -m venv venv
+source ./venv/bin/activate
 
-async def trending_videos():
-    async with TikTokApi() as api:
-        await api.create_sessions(ms_tokens=[ms_token], num_sessions=1, sleep_after=3)
-        async for video in api.trending.videos(count=30):
-            print(video)
-            print(video.as_dict)
+# install dependencies
+pip install flask
+pip install tiktokapi
 
-if __name__ == "__main__":
-    asyncio.run(trending_videos())
+# execute the program
+python -m server
 ```
 
-### Comment
-The Comment class in the TikTokApi.api.comment module represents a TikTok comment. Here's a summary of its attributes:
-- as_dict: This is a dictionary that contains the raw data associated with the comment.
-- author: This is a User object that represents the author of the comment.
-- id: This is a string that represents the id of the comment.
-- likes_count: This is an integer that represents the number of likes of the comment.
-- parent: This is a TikTokApi object.
-- text: This is a string that represents the contents of the comment.
-
-Example:
-```python
-for comment in video.comments:
-    print(comment.text)
-    print(comment.as_dict)
-```
-
-### User
-The User class in the TikTokApi.api.user module represents a TikTok user. Here's a summary of its attributes and methods:
-- as_dict: This is a dictionary that contains the raw data associated with the user.
-- info: This asynchronous method returns a dictionary of information associated with the user. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-- liked: This asynchronous method returns a user’s liked posts if they are public. It takes two parameters: count which is the amount of recent likes you want returned, and cursor which is the offset of likes from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response, the user’s likes are private, or one that is not understood.
-- parent: This is a TikTokApi object.
-- sec_uid: This is a string that represents the sec UID of the user.
-- user_id: This is a string that represents the ID of the user.
-- username: This is a string that represents the username of the user.
-- videos: This asynchronous method returns a user’s videos. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-
-Example:
-```python
-user = api.user(username='therock')
-user_data = await api.user(username='therock').info()
-async for like in api.user(username="davidteathercodes").liked():
-    # do something
-async for video in api.user(username="davidteathercodes").videos():
-    # do something
-```
-
-### Trending
-The Trending class in the TikTokApi.api.trending module contains static methods related to trending objects on TikTok. Here's a summary of its attributes and methods:
-- parent: This is a TikTokApi object.
-- videos: This static method returns videos that are trending on TikTok. It takes one parameter: count which is the amount of videos you want returned. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-
-Example:
-```python
-async for video in api.trending.videos():
-    # do something
-```
-
-### Search
-The Search class in the TikTokApi.api.search module contains static methods about searching TikTok for a phrase. Here's a summary of its attributes and methods:
-- parent: This is a TikTokApi object.
-- search_type: This static method searches for a specific type of object. It takes four parameters: search_term which is the phrase you want to search for, obj_type which is the type of object you want to search for (user), count which is the amount of users you want returned, and cursor which is the offset of users from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-- users: This static method searches for users. It takes three parameters: search_term which is the phrase you want to search for, count which is the amount of users you want returned, and cursor which is the offset of users from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-
-Example:
-```python
-async for user in api.search.search_type('david teather', 'user'):
-    # do something
-async for user in api.search.users('david teather'):
-    # do something
-```
-
-### Hashtag
-The Hashtag class in the TikTokApi.api.hashtag module represents a TikTok Hashtag/Challenge. Here's a summary of its attributes and methods:
-- as_dict: This is a dictionary that contains the raw data associated with the hashtag.
-- id: This is a string that represents the ID of the hashtag.
-- info: This asynchronous method returns all information sent by TikTok related to this hashtag.
-- name: This is a string that represents the name of the hashtag (omitting the #).
-- parent: This is a TikTokApi object.
-- videos: This asynchronous method returns TikTok videos that have this hashtag in the caption. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-
-Example:
-```python
-hashtag = api.hashtag(name='funny')
-hashtag_data = await hashtag.info()
-async for video in api.hashtag(name='funny').videos():
-    # do something
-```
-
-### Sound
-The Sound class in the TikTokApi.api.sound module represents a TikTok Sound/Music/Song. Here's a summary of its attributes and methods:
-- author: This is a User object that represents the author of the song, if it exists.
-- duration: This is an integer that represents the duration of the song in seconds.
-- id: This is a string that represents TikTok’s ID for the sound.
-- info: This asynchronous method returns all information sent by TikTok related to this sound. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-- original: This is a boolean that indicates whether the song is original or not.
-- parent: This is a TikTokApi object.
-- title: This is a string that represents the title of the song.
-- videos: This asynchronous method returns Video objects of videos created with this sound. It takes two parameters: count which is the amount of videos you want returned, and cursor which is the offset of videos from 0 you want to get. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-
-Example:
-```python
-song = api.song(id='7016547803243022337')
-sound_info = await api.sound(id='7016547803243022337').info()
-async for video in api.sound(id='7016547803243022337').videos():
-    # do something
-```
-
-### Video
-The Video class in the TikTokApi.api.video module represents a TikTok Video. Here's a summary of its attributes and methods:
-- as_dict: This is a dictionary that contains the raw data associated with the video.
-- author: This is a User object that represents the User who created the video.
-- bytes: This asynchronous method returns the bytes of a TikTok Video.
-- comments: This asynchronous method returns the comments of a TikTok Video. It takes two parameters: count which is the amount of comments you want returned, and cursor which is the offset of comments from 0 you want to get.
-- create_time: This is a datetime object that represents the creation time of the video.
-- hashtags: This is a list of Hashtag objects on the video.
-- id: This is a string that represents TikTok’s ID of the video.
-- info: This asynchronous method returns a dictionary of all data associated with a TikTok Video. It raises an InvalidResponseException if TikTok returns an invalid response or one that is not understood.
-- parent: This is a TikTokApi object.
-- related_videos: This asynchronous method returns related videos of a TikTok Video. It takes two parameters: count which is the amount of comments you want returned, and cursor which is the offset of comments from 0 you want to get.
-- sound: This is a Sound object that is associated with the video.
-- stats: This is a dictionary that represents TikTok’s stats of the video.
-- url: This is a string that represents the URL of the video.
-
-Example:
-```python
-video = api.video(id='7041997751718137094')
-video_bytes = await api.video(id='7041997751718137094').bytes()
-async for comment in api.video(id='7041997751718137094').comments():
-    # do something
-video_info = await api.video(id='7041997751718137094').info()
-async for related_videos in api.video(id='7041997751718137094').related_videos():
-    # do something
-```
+### API routes
+| Route | Method | Description | Parameters |
+| --- | --- | --- | --- |
+| /trending/videos | GET | Returns a list of trending videos. | count (default: 30, type: int): The number of videos to return. |
+| /user/\<username> | GET | Returns information about a specific user. |  |
+| /user/\<username>/liked | GET | Returns a list of videos liked by a specific user. | count (default: 30, type: int): The number of videos to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /user/\<username>/videos | GET | Returns a list of videos posted by a specific user. | count (default: 30, type: int): The number of videos to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /search/user | GET | Searches for users based on a search term. | search_term (default: "", type: str): The search term to use. <br>count (default: 10, type: int): The number of results to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /search/type/\<obj_type> | GET | Searches for a specific type of object (e.g., hashtag, sound) based on a search term. | search_term (default: "", type: str): The search term to use. <br>count (default: 10, type: int): The number of results to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /tag/\<name> | GET | Returns information about a specific hashtag. |  |
+| /tag/\<name>/videos | GET | Returns a list of videos related to a specific hashtag. | count (default: 30, type: int): The number of videos to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /song/\<id> | GET | Returns information about a specific sound. |  |
+| /song/\<id>/videos | GET | Returns a list of videos related to a specific sound. | count (default: 30, type: int): The number of videos to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /video/\<id>/comments | GET | Returns a list of comments for a specific video. | count (default: 10, type: int): The number of comments to return. <br>cursor (default: 0, type: int): The pagination cursor. |
+| /video/\<id>/related | GET | Returns a list of related videos for a specific video. | count (default: 30, type: int): The number of videos to return. <br>cursor (default: 0, type: int): The pagination cursor. |
