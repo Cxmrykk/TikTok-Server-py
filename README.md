@@ -5,7 +5,7 @@ git clone https://github.com/Cxmrykk/TikTok-server.git
 cd TikTok-server
 
 # create/enter the virtual environment
-python -m venv venv
+python3 -m venv venv
 source ./venv/bin/activate
 
 # install dependencies
@@ -13,7 +13,7 @@ pip install flask
 pip install tiktokapi
 
 # execute the program
-python3 -m server
+python -m server
 ```
 
 ### API routes
