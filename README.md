@@ -13,7 +13,7 @@ pip install flask
 pip install tiktokapi
 
 # execute the program
-python -m server
+python3 -m server
 ```
 
 ### API routes
