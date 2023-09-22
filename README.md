@@ -1,8 +1,8 @@
 ### Installation
 ```sh
 # clone the repository to disk
-git clone https://github.com/Cxmrykk/TikTok-http.git
-cd TikTok-http
+git clone https://github.com/Cxmrykk/TikTok-server.git
+cd TikTok-server
 
 # create/enter the virtual environment
 python -m venv venv
